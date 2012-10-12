@@ -7,7 +7,7 @@ LD = $(CROSS_COMPILE)ld
 OBJDUMP = $(CROSS_COMPILE)objdump
 OBJCOPY = $(CROSS_COMPILE)objcopy
 
-objs:= head.o
+objs:= head.o soc_init.o
 
 all : M-boot.bin M-boot.dis
 
@@ -22,6 +22,9 @@ M-boot.elf : $(objs)
 
 %.o : %.S
 	$(AS) -c -o $@ $<
+
+%.o : %.c
+	$(CC) -c -o $@ $<
 
 clean:
 	@rm -vf M-boot* $(objs)
