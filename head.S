@@ -1,4 +1,3 @@
-    #include "s3c2440.h"
     .global _start
     .global hang    
 
@@ -22,8 +21,7 @@ _start:
 handle_reset:
     msr	cpsr, #(1 << 6 | 1 << 7 | 0x13) @SVC mode
 
-    bl disable_watch_dog
-@    bl soc_init
+    bl soc_init
 
 @    bl urat_init   
 

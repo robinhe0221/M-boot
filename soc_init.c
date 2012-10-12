@@ -1,6 +1,11 @@
-#include "s3c2440.h"
+#include "include/io.h"
+#include "include/s3c2440.h"
 
-void disable_watch_dog(void)
+int soc_init(void)
 {
-    WTCON = 0;
+    /***Disable WDT ****/
+    writel(VA(WTCON), 0x0);
+
+
+    return 0;
 }
