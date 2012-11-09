@@ -14,3 +14,8 @@ int soc_init(void)
 
 	return 0;
 }
+
+int mem_init(void)
+{
+	return 0;
+}

@@ -11,22 +11,22 @@ LD = $(CROSS_COMPILE)ld
 OBJCOPY = $(CROSS_COMPILE)objcopy
 OBJDUMP = $(CROSS_COMPILE)objdump
 
-CFLAGS = -I $(TOP_DIR)/include
+CFLAGS = -ffreestanding -I $(TOP_DIR)/include -Wall -Werror -mno-thumb-interwork 
 
 src = $(shell find ./ -name "*.c")
 
 objs = $(patsubst %.c,%.o,$(src)) 
 
-all : bl1.bin bl1.dis
+all : M-boot.bin M-boot.dis
 
-bl1.bin : bl1.elf
+M-boot.bin : M-boot.elf
 	$(OBJCOPY) -O binary $< $@
 
-bl1.dis : bl1.elf
+M-boot.dis : M-boot.elf
 	$(OBJDUMP) -D $< > $@
 
-bl1.elf : $(HEAD_DIR)/head.o $(objs)
-	$(LD) -T $(HEAD_DIR)/bl1.lds -Ttext $(CONFIG_START_MEM) $^ -o $@
+M-boot.elf : $(HEAD_DIR)/head.o $(objs)
+	$(LD) -T $(HEAD_DIR)/M-boot.lds -Ttext $(CONFIG_START_MEM) $^ -o $@
 
 $(HEAD_DIR)/head.o : $(HEAD_DIR)/head.S
 	$(AS) $< -o $@
@@ -35,4 +35,4 @@ $(objs) : %.o : %.c
 	$(CC) $(CFLAGS) $< -c -o $@
 
 clean :
-	@rm -vf bl1.* $(objs) $(HEAD_DIR)/head.o
+	@rm -vf M-boot.* $(objs) $(HEAD_DIR)/head.o

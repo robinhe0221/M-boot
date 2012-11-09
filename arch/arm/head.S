@@ -20,8 +20,29 @@ _start:
 
 reset:
 	mov sp, #0x1000
+
 	bl	soc_init
+	
+	bl	uart_init
+	
+	adr r1, mboot
+	ldr r0, [r1], #1
+	b	1f
+0:
+	b	uart_send_byte
+	ldr r0, [r4], #1
+1:
+	cmp r0, #0x0
+	bne 0b
+
+	bl	mem_init
+
+	bl	main
+
 	b	reset
+
+mboot:
+	.ascii "\n\r\n\rDo It"
 
 handle_undef:
 	b handle_undef
